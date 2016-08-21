@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="8sp">
+    <com.noemptypromises.rahularya.lionel.AutoResizeTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:gravity="center_vertical"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingStart"
+        android:paddingRight="?android:attr/listPreferredItemPaddingEnd"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:text="Text"/>
+
+    <com.noemptypromises.rahularya.lionel.AutoResizeTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:gravity="center_vertical"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingStart"
+        android:paddingRight="?android:attr/listPreferredItemPaddingEnd"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:text="Text"/>
+</RelativeLayout>

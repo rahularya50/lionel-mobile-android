@@ -1,0 +1,134 @@
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_weight="1"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardBackgroundColor="#FFF">
+
+    <RelativeLayout
+        android:background="@drawable/ripple"
+        android:id="@+id/main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/due_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:paddingLeft="16sp"
+            android:paddingTop="8sp"
+            android:text="1/2/3"/>
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_below="@id/due_date"
+            android:paddingLeft="16sp"
+            android:text="6 hours"/>
+
+        <TextView
+            android:id="@+id/teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="14sp"
+            android:paddingLeft="16sp"
+            android:paddingRight="16sp"
+            android:paddingTop="8sp"
+            android:text="Steve"/>
+
+        <TextView
+            android:id="@+id/classCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/teacher"
+            android:layout_alignParentRight="true"
+            android:textSize="14sp"
+            android:paddingLeft="16sp"
+            android:paddingRight="16sp"
+            android:text="12AB34"/>
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:layout_below="@id/duration"
+            android:paddingTop="4sp"
+            android:textColor="#000"
+            android:paddingBottom="4sp"
+            android:paddingLeft="16sp"
+            android:text="Tennis"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@id/subject"
+            android:paddingTop="4sp"
+            android:paddingBottom="16sp"
+            android:paddingLeft="16sp"
+            android:paddingRight="16sp"
+            android:visibility="visible"
+            android:text="Fish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuff"/>
+
+        <TextView
+            android:id="@+id/descriptionSingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@id/subject"
+            android:paddingTop="4sp"
+            android:paddingBottom="16sp"
+            android:paddingLeft="16sp"
+            android:paddingRight="16sp"
+            android:visibility="invisible"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Fish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuff"/>
+
+        <View android:id="@+id/separator"
+            android:background="#9e9e9e"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical ="true"
+            android:layout_below="@id/description" />
+
+        <Button android:id="@+id/btnGetMoreResults"
+            android:background="@drawable/ripple"
+            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:layout_below="@id/separator"
+            android:textColor="#9e9e9e"
+            android:onClick="openHomework"
+            android:text="View in browser" />
+
+        <Button
+            android:layout_height="20dp"
+            android:layout_width="match_parent"
+            android:layout_below="@id/btnGetMoreResults"
+            android:background="#FFF"
+            android:textColor="#9e9e9e"
+            android:visibility="gone"
+            android:text=".   .   ." />
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/dots"
+            android:layout_height="20dp"
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:textAlignment="center"
+            android:background="#00000000"
+            android:textColor="#000"
+            android:text=".  .  ." />
+
+
+</android.support.v7.widget.CardView>
