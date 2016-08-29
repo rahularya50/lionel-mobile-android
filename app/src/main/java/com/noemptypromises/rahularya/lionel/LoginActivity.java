@@ -440,7 +440,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             SharedPreferences settings = getSharedPreferences("usercreds", 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("username", mEmail);
-            editor.putString("password", mPassword);
+            editor.putString("password", SecurePW.encrypt(mPassword));
             editor.putString("l1", ml1.html());
             editor.putString("cal", mCal.html());
             editor.putString("timetable", ml3.html());

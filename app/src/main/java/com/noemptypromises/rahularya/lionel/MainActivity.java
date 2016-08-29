@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         AnalyticsApplication application = (com.noemptypromises.rahularya.lionel.AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
         checkFirstRun();
+
+        SecurePW.context = this;
+
+        String x = SecurePW.encrypt("test");
+        Log.d(TAG, x);
+        Log.d(TAG, SecurePW.decrypt(x));
     }
 
     public void checkFirstRun() {

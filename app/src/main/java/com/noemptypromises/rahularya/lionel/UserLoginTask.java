@@ -29,19 +29,22 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
     private MenuItem rootView;
 
-    UserLoginTask(String email, String password, Context a, Boolean tTable, Boolean hLog, Boolean btin, MenuItem rootV) {
-        mEmail = email;
-        mPassword = password;
+    UserLoginTask(Context a, Boolean tTable, Boolean hLog, Boolean btin, MenuItem rootV) {
         activity = a;
         timetable = tTable;
         bulletin=btin;
         rootView = rootV;
         hw = hLog;
+
+        SharedPreferences login = activity.getSharedPreferences("usercreds", 0);
+        mEmail = login.getString("username", "username");
+        mPassword = SecurePW.decrypt(login.getString("password", "password"));
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
         String TAG = WelcomeScreen.class.getSimpleName();
+
         try {
 
             Connection.Response loginForm = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
@@ -133,10 +136,14 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
             return false;
         }
 
+        if (mPassword == "ERROR")
+        {
+            return false;
+        }
+
         SharedPreferences settings = activity.getSharedPreferences("usercreds", 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("username", mEmail);
-        editor.putString("password", mPassword);
+
         editor.putString("timetable", ml3.html());
         editor.putString("homework", ml4.html());
         editor.putString("bulletin", ml5.html());

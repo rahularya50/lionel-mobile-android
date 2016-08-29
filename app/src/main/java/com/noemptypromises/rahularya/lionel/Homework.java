@@ -289,9 +289,8 @@ public class Homework extends AppCompatActivity {
         iv.startAnimation(rotation);
         m.setActionView(iv);
 
-        SharedPreferences login = getSharedPreferences("usercreds", 0);
         Log.d(TAG, "PROGRAM start");
-        task = new com.noemptypromises.rahularya.lionel.UserLoginTask(login.getString("username", "username"), login.getString("password", "password"), this, false, true, false, m);
+        task = new com.noemptypromises.rahularya.lionel.UserLoginTask(this, false, true, false, m);
         task.execute((Void) null);
         Log.d(TAG, "PROGRAM enter");
     }

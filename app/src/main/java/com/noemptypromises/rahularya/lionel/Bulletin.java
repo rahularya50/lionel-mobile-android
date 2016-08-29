@@ -142,9 +142,8 @@ public class Bulletin extends AppCompatActivity {
         iv.startAnimation(rotation);
         m.setActionView(iv);
 
-        SharedPreferences login = getSharedPreferences("usercreds", 0);
         Log.d(TAG, "PROGRAM start");
-        task = new com.noemptypromises.rahularya.lionel.UserLoginTask(login.getString("username", "username"), login.getString("password", "password"), this, false, false, true, m);
+        task = new com.noemptypromises.rahularya.lionel.UserLoginTask(this, false, false, true, m);
         task.execute((Void) null);
         Log.d(TAG, "PROGRAM enter");
     }
