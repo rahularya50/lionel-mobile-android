@@ -94,7 +94,6 @@ public class SecurePW {
             return Base64.encodeToString(vals, Base64.DEFAULT);
 
         } catch (Exception e) {
-            Toast.makeText(context, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return "ERROR";
@@ -127,6 +126,7 @@ public class SecurePW {
             return new String(bytes, 0, bytes.length, "UTF-8");
 
         } catch (Exception e) {
+            Toast.makeText(context, "An error occurred. Please try logging out then logging in again. If this error persists, please contact Lilian Luong at 16luongl1@kgv.hk.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         return "ERROR";

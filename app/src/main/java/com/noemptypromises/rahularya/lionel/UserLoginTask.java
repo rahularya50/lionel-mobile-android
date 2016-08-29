@@ -38,6 +38,9 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         SharedPreferences login = activity.getSharedPreferences("usercreds", 0);
         mEmail = login.getString("username", "username");
+
+        SecurePW.context = a;
+
         mPassword = SecurePW.decrypt(login.getString("password", "password"));
     }
 
