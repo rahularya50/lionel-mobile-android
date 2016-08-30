@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             if (isFirstRun != info.versionCode){
                 // Place your dialog code here to display the dialog
 
-                new AlertDialog.Builder(this).setTitle("Changelog").setMessage("We'd like to apologize for the recent crashes caused by a bug in the school servers. We've circumvented the issue, and LIONeL Mobile should be restored to normal functionality now. If there are remaining issues, please contact Lilian Luong at 16luongl1@kgv.hk. \n \n ---------- \n\nThemes have been added! Go to settings to change the app colors. Send an email to 16luong1@kgv.hk to suggest more themes!").setNeutralButton("OK", null).show();
+                new AlertDialog.Builder(this).setTitle("Changelog").setMessage("Themes have been added! Go to settings to change the app colors. Send an email to 16luong1@kgv.hk to suggest more themes!").setNeutralButton("OK", null).show();
 
                 getSharedPreferences("PREFERENCE", 0)
                         .edit()
