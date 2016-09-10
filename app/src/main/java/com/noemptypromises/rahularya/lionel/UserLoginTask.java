@@ -144,6 +144,8 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
             return false;
         }
 
+        Log.d(TAG, "Reload successful!");
+
         SharedPreferences settings = activity.getSharedPreferences("usercreds", 0);
         SharedPreferences.Editor editor = settings.edit();
 

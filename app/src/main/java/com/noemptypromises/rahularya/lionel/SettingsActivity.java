@@ -26,6 +26,7 @@ import android.view.MenuItem;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -50,6 +51,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             String stringValue = value.toString();
 
+            if (preference.getKey().equals("theme")) {
+                //setTheme(R.style.Rowell);
+                PreferenceManager
+                        .getDefaultSharedPreferences(preference.getContext())
+                        .edit()
+                        .putBoolean("reloadMain", true)
+                        .commit();
+                recreate();
+                Log.d(TAG, "PROGRAM reloading theme");
+                //return true;
+            }
 
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
@@ -85,33 +97,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     }
                 }
 
-            } else {
+            }
+            else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
-            return true;
-        }
-    };
-
-    private Preference.OnPreferenceChangeListener sThemeChangeReloadListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-
-            Log.d(TAG, "PROGRAM update settingSummary");
-
-            String stringValue = value.toString();
-            if (preference.getKey().equals("theme")) {
-                setTheme(R.style.Rowell);
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .edit()
-                        .putBoolean("reloadMain", true)
-                        .commit();
-                recreate();
-                Log.d(TAG, "PROGRAM reloading theme");
-            }
-
             return true;
         }
     };
@@ -129,32 +120,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public void onBackPressed() {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        int interval = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("sync_frequency", "60"));
-        Intent intervalIntent = new Intent(this, ReloadIntervalAlarm.class);
-        PendingIntent intervalPending = PendingIntent.getBroadcast(this, 0, intervalIntent, 0);
-        manager.cancel(intervalPending);
-        if (interval != 0) {
-            manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 200, (interval * 60 * 1000), intervalPending);
-        }
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("smart_update", true)) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.set(Calendar.HOUR_OF_DAY, 8);
-            calendar.set(Calendar.MINUTE, 30);
-
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, intervalPending);
-
-            calendar.set(Calendar.HOUR_OF_DAY, 4);
-            calendar.set(Calendar.MINUTE, 15);
-
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, intervalPending);
-
-            calendar.set(Calendar.HOUR_OF_DAY, 20);
-            calendar.set(Calendar.MINUTE, 30);
-
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, intervalPending);
-        }
 
         Intent notifyIntent = new Intent(this, NotifyAlarm.class);
         PendingIntent notifyPending = PendingIntent.getBroadcast(this, 0, notifyIntent, 0);
@@ -182,14 +147,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-        preference.setOnPreferenceChangeListener(sThemeChangeReloadListener);
+        //preference.setOnPreferenceChangeListener(sThemeChangeReloadListener);
 
         // Trigger the listener immediately with the preference's
         // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+
+        if (!preference.getKey().equals("theme")) {
+            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getString(preference.getKey(), ""));
+        }
+        else
+        {
+            //Manually set themeprefs
+
+            ListPreference themePreference = (ListPreference) findPreference("theme");
+
+            // Set the summary to reflect the new value.
+            themePreference.setSummary(PreferenceManager
+                    .getDefaultSharedPreferences(this)
+                    .getString("theme", ""));
+        }
     }
 
     @Override
@@ -197,6 +176,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setTheme(getResources().getIdentifier(PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getString("theme", ""), "style", "com.noemptypromises.rahularya.lionel"));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 

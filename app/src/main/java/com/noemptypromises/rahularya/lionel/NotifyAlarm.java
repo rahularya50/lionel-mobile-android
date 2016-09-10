@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,7 +24,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO: This entire class is broken - redo parsing ASAP, or remove notifications from HW!
+
 public class NotifyAlarm extends BroadcastReceiver {
+
+    private static final String TAG = NotifyAlarm.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -225,6 +230,8 @@ public class NotifyAlarm extends BroadcastReceiver {
         if (bodyLines.size() > 0) {
             mNotifyMgr.notify(mNotificationId, mBuilder.build());
         }
+
+        Log.d(TAG, "Notification check complete");
     }
 
     public String regexer(String regex, String string, int pos) {
