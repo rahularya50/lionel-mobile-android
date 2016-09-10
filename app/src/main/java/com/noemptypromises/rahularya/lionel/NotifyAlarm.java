@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//TODO: This entire class is broken - redo parsing ASAP, or remove notifications from HW!
-
 public class NotifyAlarm extends BroadcastReceiver {
 
     private static final String TAG = NotifyAlarm.class.getSimpleName();
@@ -52,64 +50,6 @@ public class NotifyAlarm extends BroadcastReceiver {
 
         Map<String, String> codeMap = new HashMap<String, String>();
         Map<String, String[]> teacherMap = new HashMap<String, String[]>();
-
-        final Elements links = timetable.select("tr");
-
-        Pattern r = Pattern.compile("<br>[^<]*<br>");
-        Matcher m = r.matcher(timetable.html());
-        m.find();
-
-        for (int position = 0; position < 10; position++) {
-            final Elements dayElement = ((Element) links.toArray()[position + 1]).select("td");
-            for (int i = 0; i < 5; i++) {
-                String classCode = dayElement.toArray()[i].toString().substring(29, 36);
-
-                //Log.d(TAG, "PROGRAM " + timetable.html());
-
-                m.find();
-
-                //String subjectx = regexer("<br>[^<]*<br>", timetable.html(), i + position * 6 + 2);
-                String subjectx = timetable.html().substring(m.start(), m.end());
-                subjectx = subjectx.substring(4, subjectx.length() - 4);
-                codeMap.put(classCode, subjectx);
-            }
-            m.find();
-        }
-
-        Pattern r2 = Pattern.compile("<br>[^<]*<br>");
-        Matcher m2 = r2.matcher(timetable.html());
-        m2.find();
-
-        Pattern r3 = Pattern.compile("<br>[^<]* <a");
-        Matcher m3 = r3.matcher(timetable.html());
-        m3.find();
-
-
-        for (int position = 0; position < 10; position++) {
-            final Elements dayElement = ((Element) links.toArray()[position + 1]).select("td");
-            for (int i = 0; i < 5; i++) {
-                String classCode = dayElement.toArray()[i].toString().substring(29, 36);
-
-                String subjectx = regexer("<br>[^<]*<br>", timetable.html(), i + position * 6 + 2);
-                //String subjectx = timetable.html().substring(m2.start(), m2.end());
-                subjectx = subjectx.substring(4, subjectx.length() - 4);
-                m2.find();
-
-                //String teacherX = regexer("<br>[^<]* <a", timetable.html(), i + position * 5 + 1);
-                String teacherX = timetable.html().substring(m3.start(), m3.end());
-                teacherX = teacherX.substring(4, teacherX.length() - 3);
-                m3.find();
-                //Log.d(TAG, "PROGRAM " + teacherX + subjectx);
-
-                teacherMap.put(teacherX, new String[]{subjectx, classCode});
-            }
-            m2.find();
-            m2.find();
-            m2.find();
-            m2.find();
-            m2.find();
-            m2.find();
-        }
 
         String text = "blank";
         String bodyText = "";
@@ -220,6 +160,8 @@ public class NotifyAlarm extends BroadcastReceiver {
                 );
 
         mBuilder.setContentIntent(resultPendingIntent);
+
+        mBuilder.setAutoCancel(true);
 
         int mNotificationId = 001;
         NotificationManager mNotifyMgr =
