@@ -197,7 +197,7 @@ public class HW_Card extends Fragment {
 
                 height = rootView.findViewById(R.id.card_view).getHeight();
 
-                Log.d(TAG, "PROGRAM " + height);
+                //Log.d(TAG, "PROGRAM " + height);
 
                 if (!isOpen)
                 {

@@ -72,6 +72,8 @@
             android:paddingLeft="16sp"
             android:paddingRight="16sp"
             android:visibility="visible"
+            android:autoLink="all"
+            android:linksClickable="true"
             android:text="An error appears to have occurred. Sorry! Try restarting the app."/>
 
         <TextView

@@ -112,10 +112,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             isAuto = true;
             showProgress(true);
             SharedPreferences login = getSharedPreferences("usercreds", 0);
-            Log.d(TAG, "PROGRAM start");
+            //Log.d(TAG, "PROGRAM start");
             mAuthTask = new UserLoginTask(login.getString("username", "username"), login.getString("password", "password"));
             mAuthTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            Log.d(TAG, "PROGRAM enter");
+            //Log.d(TAG, "PROGRAM enter");
             enterMain();
         }
         else
@@ -180,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            Log.d(TAG, "Test");
+            //Log.d(TAG, "Test");
 
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -340,14 +340,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String TAG = WelcomeScreen.class.getSimpleName();
             try {
 
-                Log.d(TAG, "test");
+                //Log.d(TAG, "test");
 
                 Connection.Response loginForm = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
                         .method(Connection.Method.GET)
                         .timeout(0)
                         .execute();
 
-                Log.d(TAG, "PROGRAM loginForm " + loginForm.toString());
+                //Log.d(TAG, "PROGRAM loginForm " + loginForm.toString());
 
                 Connection.Response l1 = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
                         .data("username", mEmail)
@@ -357,11 +357,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         .timeout(0)
                         .execute();
 
-                Log.d(TAG, "PROGRAM l1 " + l1.toString());
+                //Log.d(TAG, "PROGRAM l1 " + l1.toString());
 
-                Log.d(TAG, "PROGRAM loginForm length " + loginForm.body().length());
+                //Log.d(TAG, "PROGRAM loginForm length " + loginForm.body().length());
 
-                Log.d(TAG, "PROGRAM doc length " + l1.body().length());
+                //Log.d(TAG, "PROGRAM doc length " + l1.body().length());
 
                 if (l1.body().length() < 20000)
                 {
@@ -384,9 +384,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         .timeout(0)
                         .execute();
 
-                Log.d(TAG, "PROGRAM l2 " + l2.toString());
+                //Log.d(TAG, "PROGRAM l2 " + l2.toString());
 
-                Log.d(TAG, "PROGRAM id " + l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id="));
+                //Log.d(TAG, "PROGRAM id " + l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id="));
 
                 int uidStartPos = l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id=");
 
@@ -402,9 +402,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 //String uid = regexer("Logout<a>\\)<div>[^>]*<div>", l1.parse().html(), 1);
 
-                Log.d(TAG, "PROGRAM uid: " + uid);
+                //Log.d(TAG, "PROGRAM uid: " + uid);
 
-                Log.d(TAG, "PROGRAM doc length " + l2.body().length());
+                //Log.d(TAG, "PROGRAM doc length " + l2.body().length());
 
                 Connection.Response l3 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/misc/printtimetable.php?sid=" + uid)
                         .cookies(l1.cookies())

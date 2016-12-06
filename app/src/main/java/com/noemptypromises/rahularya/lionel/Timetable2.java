@@ -158,7 +158,7 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
 
     public void reload(MenuItem m)
     {
-        Log.d(TAG, "PROGRAM spin!");
+        //Log.d(TAG, "PROGRAM spin!");
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageView iv = (ImageView)inflater.inflate(R.layout.button_reload, null);
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -167,14 +167,14 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
         m.setActionView(iv);
 
         SharedPreferences login = getSharedPreferences("usercreds", 0);
-        Log.d(TAG, "PROGRAM start");
+        //Log.d(TAG, "PROGRAM start");
         task = new UserLoginTask(this, true, false, false, m);
         task.execute((Void) null);
-        Log.d(TAG, "PROGRAM enter");
+        //Log.d(TAG, "PROGRAM enter");
     }
 
     public void reload(View view) {
-        Log.d(TAG, "PROGRAM spin?");
+        //Log.d(TAG, "PROGRAM spin?");
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         if (view.getAnimation() == null)
         {

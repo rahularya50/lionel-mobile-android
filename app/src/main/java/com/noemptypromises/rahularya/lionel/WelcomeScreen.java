@@ -16,6 +16,8 @@ import android.content.Intent;
 
 import android.widget.TextView;
 
+import com.google.android.gms.ads.MobileAds;
+
 import org.jsoup.Connection;
 
 import java.io.IOException;
@@ -43,6 +45,8 @@ public class WelcomeScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-5618482356089007~8022190378");
+
         textView = (TextView) findViewById(R.id.Test);
 
         Intent i = getIntent();
@@ -57,12 +61,12 @@ public class WelcomeScreen extends AppCompatActivity {
             if (!login.getString("username", "fail").equals("fail") && !login.getString("timetable", "fail").equals("fail") && !login.getString("homework", "fail").equals("fail") && i.getBooleanExtra("redirect", true) && getSharedPreferences("PREFERENCE", 0).getInt("prevVersion", 0) > 10) {
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.putExtra("auto", true);
-                Log.d(TAG, "PROGRAM startLogin");
+                //Log.d(TAG, "PROGRAM startLogin");
                 startActivity(intent);
                 overridePendingTransition(0, 0);
             }
             else {
-                Log.d(TAG, "PROGRAM fullFail");
+                //Log.d(TAG, "PROGRAM fullFail");
                 //Intent intent = new Intent(this, LoginActivity.class);
                 //intent.putExtra("auto", false);
                 //startActivity(intent);

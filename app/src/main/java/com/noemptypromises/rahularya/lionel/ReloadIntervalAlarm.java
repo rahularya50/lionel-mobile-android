@@ -14,7 +14,7 @@ public class ReloadIntervalAlarm extends BroadcastReceiver {
         // For our recurring task, we'll just display a message
         //Toast.makeText(context, "Syncing...", Toast.LENGTH_SHORT).show();
 
-        Log.d("ReloadIntervalAlarm", "auto-syncing");
+        //Log.d("ReloadIntervalAlarm", "auto-syncing");
 
         UserLoginTask task = new com.noemptypromises.rahularya.lionel.UserLoginTask(context, false, false, false, null);
         task.execute((Void) null);

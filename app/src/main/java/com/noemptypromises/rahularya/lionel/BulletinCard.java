@@ -164,7 +164,7 @@ public class BulletinCard extends Fragment {
 
                 height = rootView.findViewById(R.id.card_view).getHeight();
 
-                Log.d(TAG, "PROGRAM " + height);
+                //Log.d(TAG, "PROGRAM " + height);
 
                 if (!isOpen)
                 {

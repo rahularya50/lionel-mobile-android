@@ -77,6 +77,8 @@
             android:paddingLeft="16sp"
             android:paddingRight="16sp"
             android:visibility="visible"
+            android:autoLink="all"
+            android:linksClickable="true"
             android:text="Fish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuffFish and other stuff"/>
 
         <TextView

@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -44,11 +46,19 @@ public class MainActivity extends AppCompatActivity {
         setTheme(getResources().getIdentifier(PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getString("theme", ""), "style", "com.noemptypromises.rahularya.lionel"));
-        Log.d(TAG, "PROGRAM inMain");
+        //Log.d(TAG, "PROGRAM inMain");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ///AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+                .addTestDevice("E8E3ABC819D62AD53710595663CE4939")  // An example device ID
+                .build();
+        ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
+
         AnalyticsApplication application = (com.noemptypromises.rahularya.lionel.AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
         checkFirstRun();
@@ -56,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         SecurePW.context = this;
 
         String x = SecurePW.encrypt("test");
-        Log.d(TAG, x);
-        Log.d(TAG, SecurePW.decrypt(x));
+        //Log.d(TAG, x);
+        //Log.d(TAG, SecurePW.decrypt(x));
     }
 
     public void checkFirstRun() {
@@ -190,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     period = 1;
                 }
 
-                Log.d(TAG, "PROGRAM currentDay " + currentDay + " " + (period + currentDay * 6 + 1));
+                //Log.d(TAG, "PROGRAM currentDay " + currentDay + " " + (period + currentDay * 6 + 1));
 
                 currentDay = currentDay % 10;
 
@@ -233,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
                             codeMap.put(classCode, subject);
                             teacherMap.put(teacher, new String[]{subject, classCode});
-                            Log.d(TAG, "PROGRAM " + teacher + " " + subject + " " + classCode);
+                            //Log.d(TAG, "PROGRAM " + teacher + " " + subject + " " + classCode);
                         }
                         catch (Exception e)
                         {

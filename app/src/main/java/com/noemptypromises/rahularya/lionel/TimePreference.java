@@ -84,7 +84,7 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
                 return;
             }
 
-            Log.d(TAG, "PROGRAM " + c.getTimeInMillis());
+            //Log.d(TAG, "PROGRAM " + c.getTimeInMillis());
 
             setTime(c.getTimeInMillis());
         }

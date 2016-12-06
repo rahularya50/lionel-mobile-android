@@ -55,7 +55,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
                     .timeout(0)
                     .execute();
 
-            Log.d(TAG, "PROGRAM loginForm " + loginForm.toString());
+            //Log.d(TAG, "PROGRAM loginForm " + loginForm.toString());
 
             Connection.Response l1 = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
                     .data("username", mEmail)
@@ -65,11 +65,11 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
                     .timeout(0)
                     .execute();
 
-            Log.d(TAG, "PROGRAM l1 " + l1.toString());
+            //Log.d(TAG, "PROGRAM l1 " + l1.toString());
 
-            Log.d(TAG, "PROGRAM doc length " + l1.body().length());
+            //Log.d(TAG, "PROGRAM doc length " + l1.body().length());
 
-            if (l1.body().length() < 25000)
+            if (l1.body().length() < 20000)
             {
                 return false;
             }
@@ -90,23 +90,23 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
                     .timeout(0)
                     .execute();
 
-            Log.d(TAG, "PROGRAM l2 " + l2.toString());
+            //Log.d(TAG, "PROGRAM l2 " + l2.toString());
 
             int uidStartPos = l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id=");
 
             String uid = l1.body().substring(uidStartPos + 42, uidStartPos + 46);
 
-            Log.d(TAG, "PROGRAM uid: " + uid);
+            //Log.d(TAG, "PROGRAM uid: " + uid);
 
             String b = l1.parse().select(".smallcal").text();
 
-            Log.d(TAG," PROGRAM" + b);
+            //Log.d(TAG," PROGRAM" + b);
 
             //String uid = regexer("Logout<a>\\)<div>[^>]*<div>", l1.parse().html(), 1);
 
             //Log.d(TAG, "PROGRAM uid: " + uid);
 
-            Log.d(TAG, "PROGRAM doc length " + l2.body().length());
+            //Log.d(TAG, "PROGRAM doc length " + l2.body().length());
 
             Connection.Response l3 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/misc/printtimetable.php?sid=" + uid)
                     .cookies(l1.cookies())
@@ -139,12 +139,12 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
             return false;
         }
 
-        if (mPassword == "ERROR")
+        if (mPassword.equals("ERROR"))
         {
             return false;
         }
 
-        Log.d(TAG, "Reload successful!");
+        //Log.d(TAG, "Reload successful!");
 
         SharedPreferences settings = activity.getSharedPreferences("usercreds", 0);
         SharedPreferences.Editor editor = settings.edit();

@@ -65,7 +65,7 @@ public class PlaceholderFragment extends Fragment {
         Elements rows = timetable.select("tr"); // a with href
         for (Element i:rows)
         {
-            Log.d(TAG, "PROGRAM" + i.text());
+            //Log.d(TAG, "PROGRAM" + i.text());
         }
     }
 
@@ -89,7 +89,7 @@ public class PlaceholderFragment extends Fragment {
                 //Fragment fragment = getChildFragmentManager().findFragmentById(getResources().getIdentifier("article_fragment" + (Integer.valueOf(i + 1)).toString(), "id", "com.example.rahularya.lionel"));
 
                 position = getArguments().getInt(ARG_SECTION_NUMBER);
-                //Log.d(TAG, "PROGRAM " + position);
+                ////Log.d(TAG, "PROGRAM " + position);
 
                 Document timetable = mCallback.getTimetable();
 
@@ -100,7 +100,7 @@ public class PlaceholderFragment extends Fragment {
                 try {
                     String classCode = day.toArray()[i].toString().substring(29, 36);
 
-                    Log.d(TAG, "PROGRAM " + subjectx.html());
+                    //Log.d(TAG, "PROGRAM " + subjectx.html());
 
                     TextView period = (TextView) rootView.findViewById(getResources().getIdentifier("info_text" + (Integer.valueOf(i + 1)).toString() + "a", "id", "com.noemptypromises.rahularya.lionel"));
                     period.setText("Period " + (Integer.valueOf(i + 1)).toString());
@@ -137,7 +137,7 @@ public class PlaceholderFragment extends Fragment {
                                 String teacher = regexer("<br>[^<]* <a", subjectx.html(), 1);
                                 teacher = teacher.substring(4, teacher.length() - 3);
 
-                                Log.d(TAG, "PROGRAM " + name);
+                                //Log.d(TAG, "PROGRAM " + name);
 
                                 //View mainText = rootView.findViewById(getResources().getIdentifier("info_text" + name + "b", "id", "com.example.rahularya.lionel"));
                                 //2mainText.setVisibility(View.INVISIBLE);
@@ -181,11 +181,11 @@ public class PlaceholderFragment extends Fragment {
         Pattern r =  Pattern.compile(regex);
         Matcher m = r.matcher(string);
         for (int i = 0; i < pos; i++) {
-            //Log.d(TAG, "PROGRAM " + Integer.valueOf(i).toString());
+            ////Log.d(TAG, "PROGRAM " + Integer.valueOf(i).toString());
             Boolean a = m.find();
             if (!a)
             {
-                //Log.d(TAG, "PROGRAM FAIL" + Integer.valueOf(i).toString());
+                ////Log.d(TAG, "PROGRAM FAIL" + Integer.valueOf(i).toString());
             }
         }
         return string.substring(m.start(), m.end());

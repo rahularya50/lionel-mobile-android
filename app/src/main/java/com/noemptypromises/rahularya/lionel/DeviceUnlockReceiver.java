@@ -21,19 +21,19 @@ public class DeviceUnlockReceiver extends BroadcastReceiver {
          * device wakes up (e.g when the keyguard is gone)
          * */
         if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-            Log.d(TAG, "Device Unlocked");
+            //Log.d(TAG, "Device Unlocked");
 
             long interval = Long.valueOf(PreferenceManager.getDefaultSharedPreferences(arg0).getString("sync_frequency", "60"));
 
             long prevRefreshTime = Long.valueOf(PreferenceManager.getDefaultSharedPreferences(arg0).getString("last_refresh", "0"));
 
-            Log.d(TAG, String.valueOf(interval));
-            Log.d(TAG, String.valueOf(System.currentTimeMillis()));
-            Log.d(TAG, String.valueOf(prevRefreshTime));
+            //Log.d(TAG, String.valueOf(interval));
+            //Log.d(TAG, String.valueOf(System.currentTimeMillis()));
+            //Log.d(TAG, String.valueOf(prevRefreshTime));
 
             if (interval != 0 && System.currentTimeMillis() - prevRefreshTime > interval*60*1000) {
 
-                Log.d(TAG, "Reloading...");
+                //Log.d(TAG, "Reloading...");
                 UserLoginTask task = new com.noemptypromises.rahularya.lionel.UserLoginTask(arg0, false, false, false, null);
                 task.execute((Void) null);
 

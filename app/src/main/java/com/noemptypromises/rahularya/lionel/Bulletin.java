@@ -75,7 +75,7 @@ public class Bulletin extends AppCompatActivity {
     {
         String body = "";
         for (Element et : e.children()) {
-            Log.d(TAG, "Recursing");
+            //Log.d(TAG, "Recursing");
             String a = getTextFields(et, depth + 1);
             body = body + "\n";
             body = body + a;
@@ -86,9 +86,9 @@ public class Bulletin extends AppCompatActivity {
             body = body + "\n";
         }
         body = body + e.ownText();
-        Log.d(TAG, depth + "x  " + e.ownText());
+        //Log.d(TAG, depth + "x  " + e.ownText());
 
-        Log.d(TAG, depth + "   " + body);
+        //Log.d(TAG, depth + "   " + body);
         return body;
     }
 
@@ -134,7 +134,7 @@ public class Bulletin extends AppCompatActivity {
 
     public void reload(MenuItem m)
     {
-        Log.d(TAG, "PROGRAM spin!");
+        //Log.d(TAG, "PROGRAM spin!");
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageView iv = (ImageView)inflater.inflate(R.layout.button_reload, null);
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -142,14 +142,14 @@ public class Bulletin extends AppCompatActivity {
         iv.startAnimation(rotation);
         m.setActionView(iv);
 
-        Log.d(TAG, "PROGRAM start");
+        //Log.d(TAG, "PROGRAM start");
         task = new com.noemptypromises.rahularya.lionel.UserLoginTask(this, false, false, true, m);
         task.execute((Void) null);
-        Log.d(TAG, "PROGRAM enter");
+        //Log.d(TAG, "PROGRAM enter");
     }
 
     public void reload(View view) {
-        Log.d(TAG, "PROGRAM spin?");
+        //Log.d(TAG, "PROGRAM spin?");
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         if (view.getAnimation() == null)
         {
@@ -198,7 +198,7 @@ public class Bulletin extends AppCompatActivity {
 
 
                 BulletinCard card = new BulletinCard();
-                Log.d(TAG, "PROGRAM " + e.select(".itemheading").text());
+                //Log.d(TAG, "PROGRAM " + e.select(".itemheading").text());
                 getSupportFragmentManager().beginTransaction().add(R.id.homework_content, card).commit();
                 card.setInfo(title, name, body, dates, preview, false);
             }
@@ -219,7 +219,7 @@ public class Bulletin extends AppCompatActivity {
 
 
                 BulletinCard card = new BulletinCard();
-                Log.d(TAG, "PROGRAM " + e.select(".itemheading").text());
+                //Log.d(TAG, "PROGRAM " + e.select(".itemheading").text());
                 getSupportFragmentManager().beginTransaction().add(R.id.homework_content, card).commit();
                 card.setInfo(title, name, body, dates, preview, false);
             }

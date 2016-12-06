@@ -173,7 +173,7 @@ public class NotifyAlarm extends BroadcastReceiver {
             mNotifyMgr.notify(mNotificationId, mBuilder.build());
         }
 
-        Log.d(TAG, "Notification check complete");
+        //Log.d(TAG, "Notification check complete");
     }
 
     public String regexer(String regex, String string, int pos) {

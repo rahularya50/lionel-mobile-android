@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
 
-            Log.d(TAG, "PROGRAM update settingSummary");
+            //Log.d(TAG, "PROGRAM update settingSummary");
 
             String stringValue = value.toString();
 
@@ -59,7 +59,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .putBoolean("reloadMain", true)
                         .commit();
                 recreate();
-                Log.d(TAG, "PROGRAM reloading theme");
+                //Log.d(TAG, "PROGRAM reloading theme");
                 //return true;
             }
 
@@ -129,7 +129,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (a < System.currentTimeMillis()) {
                 a += 1000 * 60 * 60 * 24;
             }
-            Log.d(TAG, "PROGRAM starting notifier at time index " + PreferenceManager.getDefaultSharedPreferences(this).getLong("time", 1458216017528L) + " " + a);
+            //Log.d(TAG, "PROGRAM starting notifier at time index " + PreferenceManager.getDefaultSharedPreferences(this).getLong("time", 1458216017528L) + " " + a);
             manager.setRepeating(AlarmManager.RTC_WAKEUP, a, 1000 * 60 * 60 * 24, notifyPending);
         }
         super.onBackPressed();
@@ -189,19 +189,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setSupportActionBar(toolbar);
 
         setupActionBar();
-    }
-
-    public static class MyPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(final Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
-    }
-
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target) {
-        //loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
     /**

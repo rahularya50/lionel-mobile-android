@@ -100,7 +100,7 @@ public class Homework extends AppCompatActivity {
 
                         codeMap.put(classCode, subject);
                         teacherMap.put(teacher, new String[]{subject, classCode});
-                        Log.d(TAG, "PROGRAM " + teacher + " " + subject + " " + classCode);
+                        //Log.d(TAG, "PROGRAM " + teacher + " " + subject + " " + classCode);
                     }
                     catch (Exception e)
                     {
@@ -142,13 +142,13 @@ public class Homework extends AppCompatActivity {
                     issued = "Unknown";
                 }
                 try {
-                    body = element.select(".span6 > div").get(0).html();
+                    body = element.select(".span6 > div").get(1).html();
                 }
                 catch (Exception e) {
                     body = "Unknown";
                 }
                 try {
-                    teacher = element.select(".span6 > div").get(1).select(" > p").get(0).text();
+                    teacher = element.select(".span6 > div").get(3).select(" > p").get(0).text();
                 }
                 catch (Exception e)
                 {
@@ -210,7 +210,7 @@ public class Homework extends AppCompatActivity {
         document.select("br").append("\\n");
         document.select("p").prepend("\\n\\n");
         String s = document.html().replaceAll("\\\\n", "\n");
-        Log.d(TAG, "PROGRAM bodyOutput " + s);
+        //Log.d(TAG, "PROGRAM bodyOutput " + s);
         return Jsoup.clean(s, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
     }
 
@@ -218,7 +218,7 @@ public class Homework extends AppCompatActivity {
     {
         String body = "";
         for (Element et : e.children()) {
-            Log.d(TAG, "Recursing");
+            //Log.d(TAG, "Recursing");
             String a = getTextFields(et, depth + 1);
             body = body + "\n";
             body = body + a;
@@ -229,9 +229,9 @@ public class Homework extends AppCompatActivity {
             body = body + "\n";
         }
         body = body + e.ownText();
-        Log.d(TAG, depth + "x  " + e.ownText());
+        //Log.d(TAG, depth + "x  " + e.ownText());
 
-        Log.d(TAG, depth + "   " + body);
+        //Log.d(TAG, depth + "   " + body);
         return body;
     }
 
@@ -281,7 +281,7 @@ public class Homework extends AppCompatActivity {
 
     public void reload(MenuItem m)
     {
-        Log.d(TAG, "PROGRAM spin!");
+        //Log.d(TAG, "PROGRAM spin!");
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageView iv = (ImageView)inflater.inflate(R.layout.button_reload, null);
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -289,14 +289,14 @@ public class Homework extends AppCompatActivity {
         iv.startAnimation(rotation);
         m.setActionView(iv);
 
-        Log.d(TAG, "PROGRAM start");
+        //Log.d(TAG, "PROGRAM start");
         task = new com.noemptypromises.rahularya.lionel.UserLoginTask(this, false, true, false, m);
         task.execute((Void) null);
-        Log.d(TAG, "PROGRAM enter");
+        //Log.d(TAG, "PROGRAM enter");
     }
 
     public void reload(View view) {
-        Log.d(TAG, "PROGRAM spin?");
+        //Log.d(TAG, "PROGRAM spin?");
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         if (view.getAnimation() == null)
         {

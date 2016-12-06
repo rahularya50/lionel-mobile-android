@@ -19,34 +19,6 @@ public class DeviceBootReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-            int interval = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getString("sync_frequency", "60"));
-            Intent intervalIntent = new Intent(context, ReloadIntervalAlarm.class);
-            PendingIntent intervalPending = PendingIntent.getBroadcast(context, 0, intervalIntent, 0);
-            manager.cancel(intervalPending);
-            if (interval != 0)
-            {
-                manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 200, (interval*60*1000), intervalPending);
-            }
-            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("smart_update", true))
-            {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.set(Calendar.HOUR_OF_DAY, 8);
-                calendar.set(Calendar.MINUTE, 30);
-
-                manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, intervalPending);
-
-                calendar.set(Calendar.HOUR_OF_DAY, 4);
-                calendar.set(Calendar.MINUTE, 15);
-
-                manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, intervalPending);
-
-                calendar.set(Calendar.HOUR_OF_DAY, 20);
-                calendar.set(Calendar.MINUTE, 30);
-
-                manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, intervalPending);
-            }
-
             Intent notifyIntent = new Intent(context, NotifyAlarm.class);
             PendingIntent notifyPending = PendingIntent.getBroadcast(context, 0, notifyIntent, 0);
             manager.cancel(notifyPending);
