@@ -239,13 +239,7 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 }
 
-                Connection.Response cal = Jsoup.connect("http://lionel.kgv.edu.hk/kgv-additions/Calendar/master.php?style=small")
-                        .cookies(l1.cookies())
-                        .method(Connection.Method.GET)
-                        .timeout(0)
-                        .execute();
-
-                mCal = cal.parse();
+                mCal = l1.parse();
 
                 Log.d(TAG, "PROGRAM id " + l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id="));
 

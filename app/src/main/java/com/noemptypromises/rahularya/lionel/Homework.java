@@ -75,9 +75,12 @@ public class Homework extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             SharedPreferences login = getSharedPreferences("usercreds", 0);
 
-            Answers.getInstance().logContentView(new ContentViewEvent()
-                    .putContentType("Homework")
-                    .putContentId(login.getString("username", "unknown")));
+            try {
+                Answers.getInstance().logContentView(new ContentViewEvent()
+                        .putContentType("Homework")
+                        .putContentId(login.getString("username", "unknown")));
+            }
+            catch (Exception e) {}
 
             Document l3 = Jsoup.parse(login.getString("homework", "homework"));
 
@@ -156,7 +159,7 @@ public class Homework extends AppCompatActivity {
                     body = "Unknown";
                 }
                 try {
-                    teacher = element.select(".span6 > div").get(3).select(" > p").get(0).text();
+                    teacher = element.select(".span6 > div").get(2).select(" > p").get(0).text();
                 }
                 catch (Exception e)
                 {

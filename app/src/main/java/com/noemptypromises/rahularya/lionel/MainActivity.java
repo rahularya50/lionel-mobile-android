@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             if (isFirstRun != info.versionCode){
                 // Place your dialog code here to display the dialog
 
-                new AlertDialog.Builder(this).setTitle("Changelog").setMessage("Removed dependence on LIONeL 1, fixed minor bugs.").setNeutralButton("OK", null).show();
+                new AlertDialog.Builder(this).setTitle("Changelog").setMessage("Fixed glitch deplaying the wrong week.").setNeutralButton("OK", null).show();
 
                 getSharedPreferences("PREFERENCE", 0)
                         .edit()
@@ -117,7 +117,10 @@ public class MainActivity extends AppCompatActivity {
                     return new String[] {"Unknown", "Unknown"};
                 }
 
-                Crashlytics.log(login.getString("username", "none"));
+                try {
+                    Crashlytics.log(login.getString("username", "none"));
+                }
+                catch (Exception e) {}
 
 
                 Document timetable = Jsoup.parse(login.getString("timetable", "timetable"));
@@ -155,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Document l1 = Jsoup.parse(login.getString("cal", "test"));
-                String a = l1.select(".smallcal > div").get(0).html();
+                String a = l1.select(".greeting > div").get(0).html().replaceAll("\\D+","");
 
                 int currentDay = 0;
-                boolean isNext = (a.charAt(0) == 'N');
+                boolean isNext = (a.charAt(0) != 'T');
                 int currentWeek = Integer.parseInt(a.substring(a.length() - 1)) - 1;
 
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -204,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Log.d(TAG, "PROGRAM currentDay " + currentDay + " " + (period + currentDay * 6 + 1));
 
-                currentDay = currentDay % 10;
+                currentDay = (currentDay % 10 + 10) % 10;
 
                 final Elements links = timetable.select("tr");
                 final Elements dayE = ((Element) links.toArray()[currentDay + 1]).select("td");

@@ -99,9 +99,10 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
         //TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         //tabLayout.setupWithViewPager(mViewPager);
 
-        String a = l1.select(".smallcal > div").get(0).html();
+        String a = l1.select(".greeting > div").get(0).html().replaceAll("\\D+","");
 
-        boolean isNext = (a.charAt(0) == 'N');
+        int currentDay = 0;
+        boolean isNext = (a.charAt(0) != 'T');
         int currentWeek = Integer.parseInt(a.substring(a.length() - 1)) - 1;
 
         Calendar calendar = Calendar.getInstance();
