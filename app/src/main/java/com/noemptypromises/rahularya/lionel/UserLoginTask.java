@@ -49,68 +49,60 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         String TAG = WelcomeScreen.class.getSimpleName();
 
         try {
-
-            Connection.Response loginForm = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
+            Connection.Response loginForm = Jsoup.connect("https://lionel2.kgv.edu.hk/login/index.php")
                     .method(Connection.Method.GET)
                     .timeout(0)
                     .execute();
 
-            //Log.d(TAG, "PROGRAM loginForm " + loginForm.toString());
-
-            Connection.Response l1 = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
+            Connection.Response l1 = Jsoup.connect("https://lionel2.kgv.edu.hk/login/index.php")
                     .data("username", mEmail)
                     .data("password", mPassword)
+                    .data("rememberusername", "0")
                     .cookies(loginForm.cookies())
                     .method(Connection.Method.POST)
                     .timeout(0)
                     .execute();
 
-            //Log.d(TAG, "PROGRAM l1 " + l1.toString());
+            Log.d(TAG, "PROGRAM l1 " + l1.toString());
 
-            //Log.d(TAG, "PROGRAM doc length " + l1.body().length());
+            Log.d(TAG, "PROGRAM loginForm length " + loginForm.body().length());
 
-            if (l1.body().length() < 20000)
+            Log.d(TAG, "PROGRAM doc length " + l1.body().length());
+
+            if (l1.body().lastIndexOf("Log out") == -1)
             {
+                Log.d(TAG, "PROGRAM fail due to length");
                 return false;
             }
 
             Connection.Response cal = Jsoup.connect("http://lionel.kgv.edu.hk/kgv-additions/Calendar/master.php?style=small")
                     .cookies(l1.cookies())
-                    .cookies(loginForm.cookies())
                     .method(Connection.Method.GET)
                     .timeout(0)
                     .execute();
 
             mCal = cal.parse();
 
-            Connection.Response l2 = Jsoup.connect("http://lionel.kgv.edu.hk/auth/mnet/jump.php?hostid=10")
-                    .cookies(l1.cookies())
-                    .cookies(loginForm.cookies())
-                    .method(Connection.Method.GET)
-                    .timeout(0)
-                    .execute();
+            Log.d(TAG, "PROGRAM id " + l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id="));
 
-            //Log.d(TAG, "PROGRAM l2 " + l2.toString());
+            int uidStartPos = l1.body().lastIndexOf("<a alt=\"summary\" class=\" \" href=\"https://lionel2.kgv.edu.hk/local/mis/students/summary.php?sid=");
 
-            int uidStartPos = l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id=");
+            String uid = l1.body().substring(uidStartPos + 95, uidStartPos + 99);
 
-            String uid = l1.body().substring(uidStartPos + 42, uidStartPos + 46);
+            //String a = l1.parse().select(".menu").get(0).ownText();
 
-            //Log.d(TAG, "PROGRAM uid: " + uid);
+            //String uid = a.replaceAll("[^0-9]", "");
 
-            String b = l1.parse().select(".smallcal").text();
-
-            //Log.d(TAG," PROGRAM" + b);
+            //String uid = a.substring(a.length() - 20, a.length() - 16);
 
             //String uid = regexer("Logout<a>\\)<div>[^>]*<div>", l1.parse().html(), 1);
 
-            //Log.d(TAG, "PROGRAM uid: " + uid);
+            Log.d(TAG, "PROGRAM uid: " + uid);
 
             //Log.d(TAG, "PROGRAM doc length " + l2.body().length());
 
             Connection.Response l3 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/misc/printtimetable.php?sid=" + uid)
                     .cookies(l1.cookies())
-                    .cookies(l2.cookies())
                     .method(Connection.Method.GET)
                     .timeout(0)
                     .execute();
@@ -119,7 +111,6 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
             Connection.Response l4 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/mobile/myhomework.php")
                     .cookies(l1.cookies())
-                    .cookies(l2.cookies())
                     .method(Connection.Method.GET)
                     .timeout(0)
                     .execute();
@@ -128,7 +119,6 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
             Connection.Response l5 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/bulletin/bulletin.php")
                     .cookies(l1.cookies())
-                    .cookies(l2.cookies())
                     .method(Connection.Method.GET)
                     .timeout(0)
                     .execute();

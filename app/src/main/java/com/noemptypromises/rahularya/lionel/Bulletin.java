@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +21,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,11 +43,10 @@ public class Bulletin extends AppCompatActivity {
     private com.noemptypromises.rahularya.lionel.UserLoginTask task;
 
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setTheme(getResources().getIdentifier(PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getString("theme", ""), "style", "com.noemptypromises.rahularya.lionel"));
-
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,7 +55,7 @@ public class Bulletin extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        UserLoginTask mAuthTask = new UserLoginTask();
+        ParseBulletin mAuthTask = new ParseBulletin();
         mAuthTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         showProgress(true);
@@ -171,14 +172,18 @@ public class Bulletin extends AppCompatActivity {
         }
     }
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class ParseBulletin extends AsyncTask<Void, Void, Boolean> {
 
-        UserLoginTask() {
+        ParseBulletin() {
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             SharedPreferences login = getSharedPreferences("usercreds", 0);
+
+            Answers.getInstance().logContentView(new ContentViewEvent()
+                    .putContentType("Bulletin")
+                    .putContentId(login.getString("username", "unknown")));
 
             Document l3 = Jsoup.parse(login.getString("bulletin", "bulletin"));
 

@@ -5,12 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.util.Calendar;
 
 public class DeviceBootReceiver extends BroadcastReceiver {
 
@@ -24,7 +19,8 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             manager.cancel(notifyPending);
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("hw_notifications", true))
             {
-                long a = PreferenceManager.getDefaultSharedPreferences(context).getLong("time", 1458216017528L) % (1000*60*60*24) + System.currentTimeMillis() - (System.currentTimeMillis() % (1000*60*60*24));
+                long a = PreferenceManager.getDefaultSharedPreferences(context).getLong("time", 72000000L) % (1000 * 60 * 60 * 24)
+                        + System.currentTimeMillis() - (System.currentTimeMillis() % (1000*60*60*24));
                 if (a < System.currentTimeMillis())
                 {
                     a += 1000*60*60*24;

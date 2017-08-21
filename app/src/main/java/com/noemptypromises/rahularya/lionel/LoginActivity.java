@@ -5,21 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,15 +27,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -70,10 +55,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setTheme(getResources().getIdentifier(PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getString("theme", ""), "style", "com.noemptypromises.rahularya.lionel"));
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -81,7 +66,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -115,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //Log.d(TAG, "PROGRAM start");
             mAuthTask = new UserLoginTask(login.getString("username", "username"), login.getString("password", "password"));
             mAuthTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            //Log.d(TAG, "PROGRAM enter");
+            Log.d(TAG, "PROGRAM enter");
             enterMain();
         }
         else
@@ -123,23 +107,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             isAuto = false;
         }
     }
-
-    private void populateAutoComplete() {
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -187,16 +154,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return true;
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return true;
-    }
-
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -233,89 +190,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Use an AsyncTask to fetch the user's email addresses on a background thread, and update
-     * the email text field with results on the main UI thread.
-     */
-    class SetupEmailAutoCompleteTask extends AsyncTask<Void, Void, List<String>> {
-
-        @Override
-        protected List<String> doInBackground(Void... voids) {
-            ArrayList<String> emailAddressCollection = new ArrayList<>();
-
-            // Get all emails from the user's contacts and copy them to a list.
-            ContentResolver cr = getContentResolver();
-            Cursor emailCur = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                    null, null, null);
-            while (emailCur.moveToNext()) {
-                String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract
-                        .CommonDataKinds.Email.DATA));
-                emailAddressCollection.add(email);
-            }
-            emailCur.close();
-
-            return emailAddressCollection;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> emailAddressCollection) {
-            addEmailsToAutoComplete(emailAddressCollection);
-        }
-    }
-
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -339,58 +213,45 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             String TAG = WelcomeScreen.class.getSimpleName();
             try {
-
-                //Log.d(TAG, "test");
-
-                Connection.Response loginForm = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
+                Connection.Response loginForm = Jsoup.connect("https://lionel2.kgv.edu.hk/login/index.php")
                         .method(Connection.Method.GET)
                         .timeout(0)
                         .execute();
 
-                //Log.d(TAG, "PROGRAM loginForm " + loginForm.toString());
-
-                Connection.Response l1 = Jsoup.connect("https://lionel.kgv.edu.hk/login/index.php")
+                Connection.Response l1 = Jsoup.connect("https://lionel2.kgv.edu.hk/login/index.php")
                         .data("username", mEmail)
                         .data("password", mPassword)
+                        .data("rememberusername", "0")
                         .cookies(loginForm.cookies())
                         .method(Connection.Method.POST)
                         .timeout(0)
                         .execute();
 
-                //Log.d(TAG, "PROGRAM l1 " + l1.toString());
+                Log.d(TAG, "PROGRAM l1 " + l1.toString());
 
-                //Log.d(TAG, "PROGRAM loginForm length " + loginForm.body().length());
+                Log.d(TAG, "PROGRAM loginForm length " + loginForm.body().length());
 
-                //Log.d(TAG, "PROGRAM doc length " + l1.body().length());
+                Log.d(TAG, "PROGRAM doc length " + l1.body().length());
 
-                if (l1.body().length() < 20000)
+                if (l1.body().lastIndexOf("Log out") == -1)
                 {
+                    Log.d(TAG, "PROGRAM fail due to length");
                     return false;
                 }
 
                 Connection.Response cal = Jsoup.connect("http://lionel.kgv.edu.hk/kgv-additions/Calendar/master.php?style=small")
                         .cookies(l1.cookies())
-                        .cookies(loginForm.cookies())
                         .method(Connection.Method.GET)
                         .timeout(0)
                         .execute();
 
                 mCal = cal.parse();
 
-                Connection.Response l2 = Jsoup.connect("http://lionel.kgv.edu.hk/auth/mnet/jump.php?hostid=10")
-                        .cookies(l1.cookies())
-                        .cookies(loginForm.cookies())
-                        .method(Connection.Method.GET)
-                        .timeout(0)
-                        .execute();
+                Log.d(TAG, "PROGRAM id " + l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id="));
 
-                //Log.d(TAG, "PROGRAM l2 " + l2.toString());
+                int uidStartPos = l1.body().lastIndexOf("<a alt=\"summary\" class=\" \" href=\"https://lionel2.kgv.edu.hk/local/mis/students/summary.php?sid=");
 
-                //Log.d(TAG, "PROGRAM id " + l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id="));
-
-                int uidStartPos = l1.body().lastIndexOf("http://lionel.kgv.edu.hk/user/view.php?id=");
-
-                String uid = l1.body().substring(uidStartPos+42, uidStartPos+46);
+                String uid = l1.body().substring(uidStartPos+95, uidStartPos+99);
 
                 //String a = l1.parse().select(".menu").get(0).ownText();
 
@@ -402,13 +263,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 //String uid = regexer("Logout<a>\\)<div>[^>]*<div>", l1.parse().html(), 1);
 
-                //Log.d(TAG, "PROGRAM uid: " + uid);
+                Log.d(TAG, "PROGRAM uid: " + uid);
 
                 //Log.d(TAG, "PROGRAM doc length " + l2.body().length());
 
                 Connection.Response l3 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/misc/printtimetable.php?sid=" + uid)
                         .cookies(l1.cookies())
-                        .cookies(l2.cookies())
                         .method(Connection.Method.GET)
                         .timeout(0)
                         .execute();
@@ -417,7 +277,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Connection.Response l4 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/mobile/myhomework.php")
                         .cookies(l1.cookies())
-                        .cookies(l2.cookies())
                         .method(Connection.Method.GET)
                         .timeout(0)
                         .execute();
@@ -426,7 +285,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Connection.Response l5 = Jsoup.connect("https://lionel2.kgv.edu.hk/local/mis/bulletin/bulletin.php")
                         .cookies(l1.cookies())
-                        .cookies(l2.cookies())
                         .method(Connection.Method.GET)
                         .timeout(0)
                         .execute();
@@ -462,6 +320,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
+            Log.d(TAG, "isAuto:" + isAuto);
             //showProgress(false);
 
             if (success && !isAuto) {

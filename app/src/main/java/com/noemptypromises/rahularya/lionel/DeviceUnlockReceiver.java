@@ -1,15 +1,12 @@
 package com.noemptypromises.rahularya.lionel;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
+
+import java.util.concurrent.ExecutionException;
 
 public class DeviceUnlockReceiver extends BroadcastReceiver {
     private static final String TAG = DeviceUnlockReceiver.class.getSimpleName();
@@ -23,7 +20,7 @@ public class DeviceUnlockReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
             //Log.d(TAG, "Device Unlocked");
 
-            long interval = Long.valueOf(PreferenceManager.getDefaultSharedPreferences(arg0).getString("sync_frequency", "60"));
+            long interval = Long.valueOf(PreferenceManager.getDefaultSharedPreferences(arg0).getString("sync_frequency", "720"));
 
             long prevRefreshTime = Long.valueOf(PreferenceManager.getDefaultSharedPreferences(arg0).getString("last_refresh", "0"));
 
@@ -35,7 +32,11 @@ public class DeviceUnlockReceiver extends BroadcastReceiver {
 
                 //Log.d(TAG, "Reloading...");
                 UserLoginTask task = new com.noemptypromises.rahularya.lionel.UserLoginTask(arg0, false, false, false, null);
-                task.execute((Void) null);
+                try {
+                    task.execute((Void) null).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
 
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(arg0).edit();
                 editor.putString("last_refresh", String.valueOf(System.currentTimeMillis()));

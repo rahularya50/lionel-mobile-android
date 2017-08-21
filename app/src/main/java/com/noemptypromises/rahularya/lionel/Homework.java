@@ -23,6 +23,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,15 +43,15 @@ public class Homework extends AppCompatActivity {
 
     private View mProgressView;
 
-    private UserLoginTask mAuthTask;
+    private ParseHomework mAuthTask;
 
     private com.noemptypromises.rahularya.lionel.UserLoginTask task;
 
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setTheme(getResources().getIdentifier(PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getString("theme", ""), "style", "com.noemptypromises.rahularya.lionel"));
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,18 +62,22 @@ public class Homework extends AppCompatActivity {
 
         showProgress(true);
 
-        mAuthTask = new UserLoginTask();
+        mAuthTask = new ParseHomework();
         mAuthTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class ParseHomework extends AsyncTask<Void, Void, Boolean> {
 
-        UserLoginTask() {
+        ParseHomework() {
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             SharedPreferences login = getSharedPreferences("usercreds", 0);
+
+            Answers.getInstance().logContentView(new ContentViewEvent()
+                    .putContentType("Homework")
+                    .putContentId(login.getString("username", "unknown")));
 
             Document l3 = Jsoup.parse(login.getString("homework", "homework"));
 
@@ -143,6 +150,7 @@ public class Homework extends AppCompatActivity {
                 }
                 try {
                     body = element.select(".span6 > div").get(1).html();
+                    Log.d(TAG, body);
                 }
                 catch (Exception e) {
                     body = "Unknown";

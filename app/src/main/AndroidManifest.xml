@@ -115,6 +115,11 @@
         </receiver>
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="26af6d4ff91a5b2cb332ed93483ca6e6e336a951"
+            />
+
     </application>
 
 </manifest>

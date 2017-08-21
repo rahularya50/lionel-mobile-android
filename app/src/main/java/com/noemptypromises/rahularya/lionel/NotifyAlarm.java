@@ -31,6 +31,8 @@ public class NotifyAlarm extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Log.d(TAG, "Firing notifier");
+
         SharedPreferences check = context.getSharedPreferences("active", 0);
 
         if (!check.getBoolean("active", false))
@@ -46,14 +48,48 @@ public class NotifyAlarm extends BroadcastReceiver {
 
         Document l3 = Jsoup.parse(login.getString("homework", "homework"));
 
-        Elements elements = l3.select(".container-fluid").get(1).select("#stage > div > div > div");
+        Elements elements;
 
-        Map<String, String> codeMap = new HashMap<String, String>();
-        Map<String, String[]> teacherMap = new HashMap<String, String[]>();
+        try {
+            elements = l3.select(".container-fluid").get(1).select("#stage > div > div > div");
+        }
+        catch (IndexOutOfBoundsException e){
+            return;
+        }
+        Map<String, String> codeMap = new HashMap<>();
+        Map<String, String[]> teacherMap = new HashMap<>();
+
+        final Elements links = timetable.select("tr");
+
+        for (int position = 0; position < 10; position++) {
+            for (int i = 0; i < 5; i++) {
+                try {
+                    Elements dayE2 = ((Element) links.toArray()[position + 1]).select("td");
+                    final Element subjectx = (Element) dayE2.toArray()[i];
+
+                    String classCode = dayE2.toArray()[i].toString().substring(29, 36);
+
+                    String subject = regexer("<br>[^<]*<br>", subjectx.html(), 1);
+                    subject = subject.substring(4, subject.length() - 4);
+                    subject = subject.replace("&amp;", "&");
+
+                    String teacher = regexer("<br>[^<]* <a", subjectx.html(), 1);
+                    teacher = teacher.substring(4, teacher.length() - 3);
+
+                    codeMap.put(classCode, subject);
+                    teacherMap.put(teacher, new String[]{subject, classCode});
+                    //Log.d(TAG, "PROGRAM " + teacher + " " + subject + " " + classCode);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
 
         String text = "blank";
         String bodyText = "";
-        String body = "";
+        String body;
         List<String> bodyLines = new ArrayList<String>();
         List<String> subjectLines = new ArrayList<String>();
 
@@ -63,28 +99,30 @@ public class NotifyAlarm extends BroadcastReceiver {
             String dueDate;
             try {
                 code = element.select(".span3 > div > div").get(1).text();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 code = "Unknown";
             }
             try {
-                teacher = element.select(".span6 > div").get(1).select(" > p").get(0).text();
-            } catch (Exception e) {
-                teacher = "Unknown";
+                dueDate = element.select(".span3 > div > div").get(3).text();
+            }
+            catch (Exception e) {
+                dueDate = "Unknown";
             }
             try {
-                body = element.select(".span6 > div").get(0).html();
-                body = br2nl(body);
-                body = body.replace("&nbsp;", "");
-                body = body.replaceAll("[\r\n ]+[\r\n]+[\r\n]*", "\n\n");
-                body = body.replaceAll("[\r\n]+[\r\n]+[\r\n ]*", "\n\n");
-                body = body.trim();
-            } catch (Exception e) {
+                body = element.select(".span6 > div").get(1).html();
+                Log.d(TAG, body);
+
+            }
+            catch (Exception e) {
                 body = "Unknown";
             }
             try {
-                dueDate = element.select(".span3 > div > div").get(3).text();
-            } catch (Exception e) {
-                dueDate = "Unknown";
+                teacher = element.select(".span6 > div").get(3).select(" > p").get(0).text();
+            }
+            catch (Exception e)
+            {
+                teacher = "Unknown";
             }
 
             if (dueDate.contains("tomorrow")) {
@@ -104,6 +142,12 @@ public class NotifyAlarm extends BroadcastReceiver {
                         subject = code;
                     }
                 }
+
+                body = br2nl(body);
+                body = body.replace("&nbsp;","");
+                body = body.replaceAll("[\r\n ]+[\r\n]+[\r\n]*", "\n\n");
+                body = body.replaceAll("[\r\n]+[\r\n]+[\r\n ]*", "\n\n");
+                body = body.trim();
 
                 if (text.equals("blank")) {
                     text = subject + " Homework";
@@ -173,7 +217,7 @@ public class NotifyAlarm extends BroadcastReceiver {
             mNotifyMgr.notify(mNotificationId, mBuilder.build());
         }
 
-        //Log.d(TAG, "Notification check complete");
+        Log.d(TAG, "Notification check complete");
     }
 
     public String regexer(String regex, String string, int pos) {

@@ -29,7 +29,7 @@ public class BulletinCard extends Fragment {
     private String dates;
     private String preview;
 
-    private Boolean isOpen;
+    private Boolean isOpen = false;
 
     private static final String TAG = PlaceholderFragment.class.getSimpleName();
 
@@ -166,7 +166,7 @@ public class BulletinCard extends Fragment {
 
                 //Log.d(TAG, "PROGRAM " + height);
 
-                if (!isOpen)
+                if (isOpen == null || !isOpen)
                 {
                     ViewGroup.LayoutParams b = rootView.findViewById(R.id.card_view).getLayoutParams();
                     b.height = Math.round(170* scale + 0.5f);

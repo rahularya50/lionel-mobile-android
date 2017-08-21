@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -147,13 +148,15 @@ public class TimetableExpand extends AppCompatActivity {
                 issued = "Unknown";
             }
             try {
-                body = element.select(".span6 > div").get(0).html();
+                body = element.select(".span6 > div").get(1).html();
+                Log.d(TAG, body);
+
             }
             catch (Exception e) {
                 body = "Unknown";
             }
             try {
-                teacher = element.select(".span6 > div").get(1).select(" > p").get(0).text();
+                teacher = element.select(".span6 > div").get(3).select(" > p").get(0).text();
             }
             catch (Exception e)
             {

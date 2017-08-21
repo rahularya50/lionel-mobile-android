@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class TimePreference extends DialogPreference implements Preference.OnPreferenceChangeListener {
     private TimePicker picker = null;
-    public final static long DEFAULT_VALUE = 0;
+    public final static long DEFAULT_VALUE = 72000000L;
 
     private static final String TAG = TimePreference.class.getSimpleName();
 

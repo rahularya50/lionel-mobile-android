@@ -17,7 +17,7 @@
     <com.noemptypromises.rahularya.lionel.TimePreference
         android:dependency="hw_notifications"
         android:key="time"
-        android:summary="8:00"
+        android:summary="8:00 PM"
         android:layout="@layout/custom_preference_title"
         android:title="Notification Time" />
 
@@ -47,7 +47,7 @@
         android:title="Sync at key times (Recommended)" />
 
     <ListPreference
-        android:defaultValue="180"
+        android:defaultValue="720"
         android:entries="@array/pref_sync_frequency_titles"
         android:entryValues="@array/pref_sync_frequency_values"
         android:key="sync_frequency"

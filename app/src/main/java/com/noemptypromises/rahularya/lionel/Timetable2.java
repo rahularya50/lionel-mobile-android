@@ -1,30 +1,30 @@
 package com.noemptypromises.rahularya.lionel;
 
-        import android.content.Context;
-        import android.content.SharedPreferences;
-        import android.preference.PreferenceManager;
-        import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
-        import android.support.v4.app.Fragment;
-        import android.support.v4.app.FragmentManager;
-        import android.support.v4.app.FragmentPagerAdapter;
-        import android.support.v4.view.ViewPager;
-        import android.os.Bundle;
-        import android.support.v7.widget.Toolbar;
-        import android.util.Log;
-        import android.view.LayoutInflater;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 
-        import android.view.animation.Animation;
-        import android.view.animation.AnimationUtils;
-        import android.widget.ImageView;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
-        import org.jsoup.Jsoup;
-        import org.jsoup.nodes.Document;
-
-        import java.util.Calendar;
+import java.util.Calendar;
 
 public class Timetable2 extends AppCompatActivity implements PlaceholderFragment.CheckTimetableLoad {
 
@@ -63,10 +63,10 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setTheme(getResources().getIdentifier(PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getString("theme", ""), "style", "com.noemptypromises.rahularya.lionel"));
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable2);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,7 +86,14 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
         timetable = Jsoup.parse(login.getString("timetable", "timetable"));
         l1 = Jsoup.parse(login.getString("cal", "test"));
         ready = true;
-        //getTimetable = new UserLoginTask(login.getString("username", "username"), login.getString("password", "password"));
+
+        try {
+            Answers.getInstance().logContentView(new ContentViewEvent()
+                    .putContentType("Timetable")
+                    .putContentId(login.getString("username", "unknown")));
+        }
+        catch (Exception e) {}
+        //getTimetable = new ParseHomework(login.getString("username", "username"), login.getString("password", "password"));
         //getTimetable.execute((Void) null);
 
         //TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -94,41 +101,50 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
 
         String a = l1.select(".smallcal > div").get(0).html();
 
-        int currentWeek = Integer.parseInt(a.substring(a.length() - 1));
+        boolean isNext = (a.charAt(0) == 'N');
+        int currentWeek = Integer.parseInt(a.substring(a.length() - 1)) - 1;
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-        if (day == 1)
+        if (day == Calendar.SATURDAY || day == Calendar.SUNDAY)
         {
-            currentDay = currentWeek * 5 - 5;
+            currentDay = currentWeek * 5;
+            if (!isNext)
+            {
+                currentDay += 5;
+            }
         }
-        if (day >= 2 && day <= 5)
+        if (day >= Calendar.MONDAY && day <= Calendar.THURSDAY)
         {
             if (hour >= 15)
             {
-                currentDay = currentWeek * 5 - 5 + day - 1;
+                currentDay = currentWeek * 5 + day - 1;
             }
             else
             {
-                currentDay = currentWeek * 5 - 5 + day - 2;
+                currentDay = currentWeek * 5 + day - 2;
             }
         }
-        if (day == 6)
+        if (day == Calendar.FRIDAY)
         {
             if (hour >= 15)
             {
-                currentDay = currentWeek * 5;
+                currentDay = (currentWeek) * 5;
+                if (!isNext)
+                {
+                    currentDay += 5;
+                }
             }
             else
             {
-                currentDay = currentWeek * 5 - 1;
+                currentDay = currentWeek * 5 + day - 2;
+                if (isNext)
+                {
+                    currentDay += 5;
+                }
             }
-        }
-        if (day == 7)
-        {
-            currentDay = currentWeek * 5 - 5;
         }
 
         mViewPager.setCurrentItem(50 + currentDay);

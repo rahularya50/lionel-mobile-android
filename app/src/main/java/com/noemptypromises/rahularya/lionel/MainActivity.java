@@ -9,16 +9,14 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -43,21 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setTheme(getResources().getIdentifier(PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .getString("theme", ""), "style", "com.noemptypromises.rahularya.lionel"));
         //Log.d(TAG, "PROGRAM inMain");
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ///AdRequest adRequest = new AdRequest.Builder().build();
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                .addTestDevice("E8E3ABC819D62AD53710595663CE4939")  // An example device ID
-                .build();
-        ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
 
         AnalyticsApplication application = (com.noemptypromises.rahularya.lionel.AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
@@ -65,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         SecurePW.context = this;
 
-        String x = SecurePW.encrypt("test");
+        //String x = SecurePW.encrypt("test");
         //Log.d(TAG, x);
         //Log.d(TAG, SecurePW.decrypt(x));
     }
@@ -78,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             if (isFirstRun != info.versionCode){
                 // Place your dialog code here to display the dialog
 
-                new AlertDialog.Builder(this).setTitle("Changelog").setMessage("Themes have been added! Go to settings to change the app colors. Send an email to 16luong1@kgv.hk to suggest more themes!").setNeutralButton("OK", null).show();
+                new AlertDialog.Builder(this).setTitle("Changelog").setMessage("Removed dependence on LIONeL 1, fixed minor bugs.").setNeutralButton("OK", null).show();
 
                 getSharedPreferences("PREFERENCE", 0)
                         .edit()
@@ -126,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
                     return new String[] {"Unknown", "Unknown"};
                 }
 
+                Crashlytics.log(login.getString("username", "none"));
+
+
                 Document timetable = Jsoup.parse(login.getString("timetable", "timetable"));
 
                 int period;
@@ -164,40 +158,48 @@ public class MainActivity extends AppCompatActivity {
                 String a = l1.select(".smallcal > div").get(0).html();
 
                 int currentDay = 0;
-                int currentWeek = Integer.parseInt(a.substring(a.length() - 1));
+                boolean isNext = (a.charAt(0) == 'N');
+                int currentWeek = Integer.parseInt(a.substring(a.length() - 1)) - 1;
+
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
 
-                if (day == 1)
+                if (day == Calendar.SATURDAY || day == Calendar.SUNDAY)
                 {
-                    currentDay = currentWeek * 5 - 5;
-                    period = 1;
+                    currentDay = currentWeek * 5;
+                    if (!isNext)
+                    {
+                        currentDay += 5;
+                    }
                 }
-                if (day >= 2 && day <= 5)
+                if (day >= Calendar.MONDAY && day <= Calendar.THURSDAY)
                 {
                     if (hour >= 15)
                     {
-                        currentDay = currentWeek * 5 - 5 + day - 1;
+                        currentDay = currentWeek * 5 + day - 1;
                     }
                     else
                     {
-                        currentDay = currentWeek * 5 - 5 + day - 2;
+                        currentDay = currentWeek * 5 + day - 2;
                     }
                 }
-                if (day == 6)
+                if (day == Calendar.FRIDAY)
                 {
                     if (hour >= 15)
                     {
-                        currentDay = currentWeek * 5;
+                        currentDay = (currentWeek) * 5;
+                        if (!isNext)
+                        {
+                            currentDay += 5;
+                        }
                     }
                     else
                     {
-                        currentDay = currentWeek * 5 - 5 + day - 2;
+                        currentDay = currentWeek * 5 + day - 2;
+                        if (isNext)
+                        {
+                            currentDay += 5;
+                        }
                     }
-                }
-                if (day == 7)
-                {
-                    currentDay = currentWeek * 5 - 5;
-                    period = 1;
                 }
 
                 //Log.d(TAG, "PROGRAM currentDay " + currentDay + " " + (period + currentDay * 6 + 1));
