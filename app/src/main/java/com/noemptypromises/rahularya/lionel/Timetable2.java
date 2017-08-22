@@ -105,6 +105,7 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
         boolean isNext = (a.charAt(0) != 'T');
         int currentWeek = Character.getNumericValue(a.charAt(a.indexOf("Week ") + 5)) - 1;
 
+        Log.d(TAG, a);
         Log.d(TAG, String.valueOf(currentWeek));
         Log.d(TAG, String.valueOf(a.indexOf("Week ")));
         Log.d(TAG, a.substring(a.indexOf("Week ") + 5));

@@ -117,7 +117,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         PendingIntent notifyPending = PendingIntent.getBroadcast(this, 0, notifyIntent, 0);
         manager.cancel(notifyPending);
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hw_notifications", true)) {
-            long a = PreferenceManager.getDefaultSharedPreferences(this).getLong("time", 72000000L) % (1000 * 60 * 60 * 24)
+            long a = PreferenceManager.getDefaultSharedPreferences(this).getLong("time", 43200000L) % (1000 * 60 * 60 * 24)
                     + System.currentTimeMillis() - (System.currentTimeMillis() % (1000 * 60 * 60 * 24));
             if (a < System.currentTimeMillis()) {
                 a += 1000 * 60 * 60 * 24;

@@ -19,7 +19,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             manager.cancel(notifyPending);
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("hw_notifications", true))
             {
-                long a = PreferenceManager.getDefaultSharedPreferences(context).getLong("time", 72000000L) % (1000 * 60 * 60 * 24)
+                long a = PreferenceManager.getDefaultSharedPreferences(context).getLong("time", 43200000L) % (1000 * 60 * 60 * 24)
                         + System.currentTimeMillis() - (System.currentTimeMillis() % (1000*60*60*24));
                 if (a < System.currentTimeMillis())
                 {

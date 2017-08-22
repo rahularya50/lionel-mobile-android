@@ -6,7 +6,6 @@ import android.os.Build;
 import android.preference.DialogPreference;
 import android.preference.Preference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -16,7 +15,7 @@ import java.util.Date;
 
 public class TimePreference extends DialogPreference implements Preference.OnPreferenceChangeListener {
     private TimePicker picker = null;
-    public final static long DEFAULT_VALUE = 72000000L;
+    public final static long DEFAULT_VALUE = 43200000L;
 
     private static final String TAG = TimePreference.class.getSimpleName();
 
