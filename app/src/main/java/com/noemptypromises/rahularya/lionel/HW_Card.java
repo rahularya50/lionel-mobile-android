@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +87,11 @@ public class HW_Card extends Fragment {
         classCodeText.setText(subject);
         bodyText.setText(body);
         previewText.setText(body);
-        dueDateText.setText(date.substring(7));
+        try {
+            dueDateText.setText(date.substring(7));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         teacherText.setText(teacher);
         durationText.setText(duration);
         codeText.setText(code);

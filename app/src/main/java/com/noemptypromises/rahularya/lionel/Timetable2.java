@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,13 +98,16 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
         //getTimetable.execute((Void) null);
 
         //TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //tabLayout.setupWithViewPager(mViewPager);
+        //tabLayout.setupWithViewPager(mViewPager)
 
-        String a = l1.select(".greeting > div").get(0).html().replaceAll("\\D+","");
+        String a = l1.select(".greeting > div").get(0).html();
 
-        int currentDay = 0;
         boolean isNext = (a.charAt(0) != 'T');
-        int currentWeek = Integer.parseInt(a.substring(a.length() - 1)) - 1;
+        int currentWeek = Character.getNumericValue(a.charAt(a.indexOf("Week ") + 5)) - 1;
+
+        Log.d(TAG, String.valueOf(currentWeek));
+        Log.d(TAG, String.valueOf(a.indexOf("Week ")));
+        Log.d(TAG, a.substring(a.indexOf("Week ") + 5));
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);

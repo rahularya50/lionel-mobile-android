@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -158,11 +159,13 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Document l1 = Jsoup.parse(login.getString("cal", "test"));
-                String a = l1.select(".greeting > div").get(0).html().replaceAll("\\D+","");
+                String a = l1.select(".greeting > div").get(0).html();
 
                 int currentDay = 0;
                 boolean isNext = (a.charAt(0) != 'T');
-                int currentWeek = Integer.parseInt(a.substring(a.length() - 1)) - 1;
+                int currentWeek = Character.getNumericValue(a.charAt(a.indexOf("Week ") + 5)) - 1;
+
+                Log.d(TAG, String.valueOf(currentWeek));
 
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
 
