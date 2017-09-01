@@ -181,9 +181,15 @@ public class Bulletin extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             SharedPreferences login = getSharedPreferences("usercreds", 0);
 
-            Answers.getInstance().logContentView(new ContentViewEvent()
-                    .putContentType("Bulletin")
-                    .putContentId(login.getString("username", "unknown")));
+            try {
+                Answers.getInstance().logContentView(new ContentViewEvent()
+                        .putContentType("Bulletin")
+                        .putContentId(login.getString("username", "unknown")));
+            }
+            catch (Exception ignored)
+            {
+
+            }
 
             Document l3 = Jsoup.parse(login.getString("bulletin", "bulletin"));
 

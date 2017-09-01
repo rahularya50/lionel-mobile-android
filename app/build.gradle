@@ -30,8 +30,8 @@ android {
         applicationId 'com.noemptypromises.rahularya.lionel'
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 21
-        versionName "1.4.4"
+        versionCode 22
+        versionName "1.4.5"
         signingConfig signingConfigs.config
     }
 

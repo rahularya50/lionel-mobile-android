@@ -32,7 +32,7 @@ public class HW_Card extends Fragment {
     private String duration;
     private String subject;
 
-    private Boolean isOpen;
+    private Boolean isOpen = false;
 
     private static final String TAG = PlaceholderFragment.class.getSimpleName();
 

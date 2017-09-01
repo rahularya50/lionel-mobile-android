@@ -171,8 +171,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (day == Calendar.SATURDAY || day == Calendar.SUNDAY)
                 {
+                    period = 1;
                     currentDay = currentWeek * 5;
-                    if (!isNext)
+                    if (!isNext && day == Calendar.SATURDAY)
                     {
                         currentDay += 5;
                     }
@@ -192,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     if (hour >= 15)
                     {
+                        period = 1;
                         currentDay = (currentWeek) * 5;
                         if (!isNext)
                         {

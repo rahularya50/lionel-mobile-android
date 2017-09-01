@@ -117,7 +117,7 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
         if (day == Calendar.SATURDAY || day == Calendar.SUNDAY)
         {
             currentDay = currentWeek * 5;
-            if (!isNext)
+            if (!isNext && day == Calendar.SATURDAY)
             {
                 currentDay += 5;
             }
