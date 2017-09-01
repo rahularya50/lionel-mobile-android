@@ -1,6 +1,7 @@
 package com.noemptypromises.rahularya.lionel;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,15 +27,17 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
     private Boolean timetable;
     private Boolean hw;
     private Boolean bulletin;
+    private BroadcastReceiver.PendingResult receiver;
 
     private MenuItem rootView;
 
-    UserLoginTask(Context a, Boolean tTable, Boolean hLog, Boolean btin, MenuItem rootV) {
+    UserLoginTask(Context a, Boolean tTable, Boolean hLog, Boolean btin, MenuItem rootV, BroadcastReceiver.PendingResult rcvr) {
         activity = a;
         timetable = tTable;
         bulletin=btin;
         rootView = rootV;
         hw = hLog;
+        receiver = rcvr;
 
         SharedPreferences login = activity.getSharedPreferences("usercreds", 0);
         mEmail = login.getString("username", "username");
@@ -137,6 +140,8 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         editor.putString("homework", ml4.html());
         editor.putString("bulletin", ml5.html());
         editor.putString("cal", mCal.html());
+        editor.putString("last_refresh", String.valueOf(System.currentTimeMillis()));
+
         editor.commit();
 
 
@@ -170,6 +175,10 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
             Intent intent = new Intent(activity, Bulletin.class);
             activity.startActivity(intent);
             ((Activity) activity).finish();
+        }
+        if (receiver != null)
+        {
+            receiver.finish();
         }
         return;
     }

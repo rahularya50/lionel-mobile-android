@@ -190,7 +190,7 @@ public class Timetable2 extends AppCompatActivity implements PlaceholderFragment
 
         SharedPreferences login = getSharedPreferences("usercreds", 0);
         //Log.d(TAG, "PROGRAM start");
-        task = new UserLoginTask(this, true, false, false, m);
+        task = new UserLoginTask(this, true, false, false, m, null);
         task.execute((Void) null);
         //Log.d(TAG, "PROGRAM enter");
     }

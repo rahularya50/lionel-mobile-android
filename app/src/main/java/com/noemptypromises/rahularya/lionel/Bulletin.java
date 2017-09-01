@@ -144,7 +144,7 @@ public class Bulletin extends AppCompatActivity {
         m.setActionView(iv);
 
         //Log.d(TAG, "PROGRAM start");
-        task = new com.noemptypromises.rahularya.lionel.UserLoginTask(this, false, false, true, m);
+        task = new com.noemptypromises.rahularya.lionel.UserLoginTask(this, false, false, true, m, null);
         task.execute((Void) null);
         //Log.d(TAG, "PROGRAM enter");
     }

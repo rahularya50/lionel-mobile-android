@@ -3,10 +3,8 @@ package com.noemptypromises.rahularya.lionel;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
-import java.util.concurrent.ExecutionException;
+import android.util.Log;
 
 public class DeviceUnlockReceiver extends BroadcastReceiver {
     private static final String TAG = DeviceUnlockReceiver.class.getSimpleName();
@@ -18,7 +16,7 @@ public class DeviceUnlockReceiver extends BroadcastReceiver {
          * device wakes up (e.g when the keyguard is gone)
          * */
         if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-            //Log.d(TAG, "Device Unlocked");
+            Log.d(TAG, "Device Unlocked");
 
             long interval = Long.valueOf(PreferenceManager.getDefaultSharedPreferences(arg0).getString("sync_frequency", "720"));
 
@@ -29,18 +27,11 @@ public class DeviceUnlockReceiver extends BroadcastReceiver {
             //Log.d(TAG, String.valueOf(prevRefreshTime));
 
             if (interval != 0 && System.currentTimeMillis() - prevRefreshTime > interval*60*1000) {
-
                 //Log.d(TAG, "Reloading...");
-                UserLoginTask task = new com.noemptypromises.rahularya.lionel.UserLoginTask(arg0, false, false, false, null);
-                try {
-                    task.execute((Void) null).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
+                final PendingResult result = goAsync();
+                final UserLoginTask task = new com.noemptypromises.rahularya.lionel.UserLoginTask(arg0, false, false, false, null, result);
+                task.execute((Void) null);
 
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(arg0).edit();
-                editor.putString("last_refresh", String.valueOf(System.currentTimeMillis()));
-                editor.commit();
             }
         }
     }

@@ -3,8 +3,6 @@ package com.noemptypromises.rahularya.lionel;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 public class ReloadIntervalAlarm extends BroadcastReceiver {
 
@@ -16,7 +14,7 @@ public class ReloadIntervalAlarm extends BroadcastReceiver {
 
         //Log.d("ReloadIntervalAlarm", "auto-syncing");
 
-        UserLoginTask task = new com.noemptypromises.rahularya.lionel.UserLoginTask(context, false, false, false, null);
+        UserLoginTask task = new com.noemptypromises.rahularya.lionel.UserLoginTask(context, false, false, false, null, null);
         task.execute((Void) null);
     }
 }
