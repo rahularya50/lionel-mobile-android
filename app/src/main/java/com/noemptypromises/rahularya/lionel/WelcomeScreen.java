@@ -51,7 +51,12 @@ public class WelcomeScreen extends AppCompatActivity {
         try {
             PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
 
-            if (!login.getString("username", "fail").equals("fail") && !login.getString("timetable", "fail").equals("fail") && !login.getString("homework", "fail").equals("fail") && i.getBooleanExtra("redirect", true) && getSharedPreferences("PREFERENCE", 0).getInt("prevVersion", 0) > 19) {
+            if (!login.getString("username", "fail").equals("fail")
+                    && !login.getString("username", "fail").substring(0, 2).equals("p_")
+                    && !login.getString("timetable", "fail").equals("fail")
+                    && !login.getString("homework", "fail").equals("fail")
+                    && i.getBooleanExtra("redirect", true)
+                    && getSharedPreferences("PREFERENCE", 0).getInt("prevVersion", 0) > 19) {
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.putExtra(AUTO, true);
                 //Log.d(TAG, "PROGRAM startLogin");

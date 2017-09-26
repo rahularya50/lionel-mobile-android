@@ -137,6 +137,12 @@ public class LoginActivity extends AppCompatActivity {
             focusView = mEmailView;
             cancel = true;
         }
+        // Check for a valid student uid.
+        if (email.substring(0, 2).equals("p_")) {
+            mEmailView.setError("Parent login is not yet supported.");
+            focusView = mEmailView;
+            cancel = true;
+        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
