@@ -262,65 +262,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                 }
 
-                String text = "";
-
-                for (Element element : elements) {
-                    String code;
-                    String teacher;
-                    try {
-                        code = element.select(".span3 > div > div").get(1).text();
-                    }
-                    catch (Exception e) {
-                        code = "Unknown";
-                    }
-                    try {
-                        teacher = element.select(".span6 > div").get(1).select(" > p").get(0).text();
-                    }
-                    catch (Exception e)
-                    {
-                        teacher = "Unknown";
-                    }
-
-                    String subject = codeMap.get(code);
-
-                    if (subject == null)
-                    {
-                        try {
-                            subject = teacherMap.get(teacher)[0];
-                        }
-                        catch (Exception ignored)
-                        {
-                        }
-                    }
-
-                    if (subject == null) {
-                        if (code == null) {
-                            subject = "Unknown";
-                        }
-                        else
-                        {
-                            subject = code;
-                        }
-                    }
-                    text = text + subject + ", ";
-                }
-
-                if (text.length() != 0)
-                {
-                    text = text.substring(0,text.length()-2);
-                }
-                else
-                {
-                    text = "No homework";
-                }
-
-                return new String[] {subjectF, text};
+                return new String[] {subjectF};
             }
 
             @Override
             protected void onPostExecute(final String[] x) {
                 ((TextView) findViewById(R.id.nextPeriod)).setText("Next: " + x[0] + ".");
-                ((TextView) findViewById(R.id.nextHW)).setText(x[1] + ".");
+//                ((TextView) findViewById(R.id.nextHW)).setText(x[1] + ".");
             }
     }
 
